@@ -21,7 +21,7 @@
 # set -x
 
 PROGNAME=`basename $0`
-VERSION="Version 1.0"
+VERSION="Version 1.1"
 AUTHOR="Guillaume Subiron (http://www.sysnove.fr/)"
 
 STATE_OK=0
@@ -185,6 +185,16 @@ cd $SPOOLDIR >/dev/null 2>/dev/null || {
     echo -n "Cannot cd to $SPOOLDIR"
     exit $STATE_CRIT
 }
+
+# Access
+for d in deferred active maildrop incoming corrupt hold
+do
+  if [ ! -r $d ]
+  then
+      echo -n "queue dir '$d' is not readable"
+      exit $STATE_CRITICAL
+  fi
+done
 
 # Get values
 for i in deferred active maildrop incoming corrupt hold; do
